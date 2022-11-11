@@ -1,26 +1,76 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useState } from "react";
+import { tasks, Tasks } from "./API/api";
+import { NavLink, Route, Routes } from 'react-router-dom'
+import { Layout, Context } from "./pages/Layout";
+import "./App.css";
+import { SingleTaskPage } from "./pages/SingleTaskPage";
+import { Homepage } from "./pages/Homepage";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+let uuid: number = 1
+
+export const App: FC = () => {
+	const [data, setData] = useState<Tasks[]>(tasks)
+	const columns: string[] = ["done", "in progress", "blocked", "todo"];
+
+	const handleDelete = (id: string | undefined) => {
+		setData((prev: Tasks[]) => prev.filter((el) => el.id !== id));
+	};
+
+	const handleSave = (task: Tasks) => {
+		const { description, title, category, status, id } = task
+		if (id) {
+			setData((prev: Tasks[]) => {
+				return prev.map((el) => {
+					if (el.id === id) {
+						el.description = description || el.description;
+						el.title = title || el.title;
+						el.category = category || el.category;
+						el.status = status || el.status;
+					}
+					return el;
+				});
+			});
+		} else {
+			setData((prev: Tasks[]) => {
+				return [
+					...prev,
+					{
+						id: ++uuid + '',
+						description: description || "Nothing set",
+						title: title || "Nothing set",
+						category: category || "Nothing Set",
+						status: status,
+					},
+				];
+			});
+		}
+	};
+
+	return (
+		<>
+			<nav>
+				<NavLink
+					to={"/Homepage"}
+				>
+					Homepage
+				</NavLink>
+				<NavLink
+					to={"/boards"}
+				>
+					Boards
+				</NavLink>
+			</nav>
+			<Context.Provider value={{ handleSave, columns, handleDelete, data }}>
+				<Routes>
+					<Route
+						path="/boards"
+						element={<Layout />}
+					/>
+					<Route path="/boards/:id" element={<SingleTaskPage />} />
+					<Route index path="/homepage" element={<Homepage />} />
+					<Route path="/" element={<Homepage />} />
+				</Routes>
+			</Context.Provider>
+		</>
+	);
 }
-
-export default App;

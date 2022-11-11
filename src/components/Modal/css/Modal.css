@@ -1,0 +1,47 @@
+.editBox {
+	width: 50%;
+	height: 40%;
+	justify-content: space-around;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.editBox > * {
+	width: 100%;
+	max-height: 30px;
+	border-radius: 10px;
+	padding: 5px;
+	background-color: grey;
+	opacity: 0.7;
+}
+
+.editBox > textarea {
+	max-height: 50px;
+}
+
+.btnContainer {
+	background-color: transparent !important; 
+	display: flex;
+	justify-content: space-around;
+}
+
+.btnContainer > button:nth-child(2) {
+	background-color: rgb(243, 99, 10);
+}
+
+.btnContainer > button:nth-child(1) {
+	background-color: rgb(70, 194, 111);
+}
+
+.btnContainer > button {
+	width: 30%;
+	color: white;
+	height: 50px;
+}
+
+.modal {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

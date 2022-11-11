@@ -1,0 +1,14 @@
+.taskContainer {
+	width: 24%;
+	text-align: center;
+}
+
+.taskContainer > button {
+	background-color: rgb(70, 187, 70);
+	color: white;
+}
+
+.taskContainer > * {
+	margin-bottom: 20px;
+}
+
